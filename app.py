@@ -1,6 +1,7 @@
 
 import csv
 from dataclasses import dataclass
+import os
 
 @dataclass
 class Spool:
@@ -114,6 +115,12 @@ def find_inventory(barcode) -> Inventory | None:
     inventoryList.append(new_inventory)
     return new_inventory
 
+def beep_error():
+    os.system('spd-say "Error"')
+
+def beep_ok():
+    os.system('spd-say "OK"')
+
 def main():
     load_data()
 
@@ -122,7 +129,7 @@ def main():
 
         spool_type = find_type(barcode)
         if spool_type is None:
-            #beep_error()
+            beep_error()
             manufacturer = input("Manufacturer: ")
             material = input("Material: ")
             color = input("Color: ")
@@ -150,7 +157,7 @@ def main():
             amount = int(amount_input)
             inv.loose_weight += amount - spool_type.empty_weight
             inv.total_weight += amount - spool_type.empty_weight
-        #beep_ok()
+        beep_ok()
         save_data()
 
 
